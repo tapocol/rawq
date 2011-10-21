@@ -1,4 +1,4 @@
-module RawQ
+class RawQ
   module Version
     MAJOR = 0
     MINOR = 1
