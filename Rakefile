@@ -15,13 +15,15 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "rawq"
-  gem.homepage = "http://github.com/craigjackson/rawq"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Ruby web app for media management/streaming through HTTP with HTML5 interface}
+  gem.description = <<-DESC
+Ruby media streaming web application
+
+Simply install and run on a server. Access the web application with any well-supported HTML5 browser.
+  DESC
   gem.email = "tapocol@gmail.com"
   gem.authors = ["Craig Jackson"]
-  # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
 
