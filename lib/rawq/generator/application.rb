@@ -14,12 +14,13 @@ class RawQ
             options[:show_help] = true
           end
 
-          if options[:application_name].nil? || options[:application_name].squeeze.strip == ""
-            $stderr.puts "missing application name"
-            options[:show_help] = true
+          if options[:show_help]
+            $stderr.puts options.opts
+            return 1
           end
 
-          if options[:show_help]
+          if options[:application_name].nil? || options[:application_name].squeeze.strip == ""
+            $stderr.puts "missing application name"
             $stderr.puts options.opts
             return 1
           end

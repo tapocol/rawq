@@ -1,0 +1,12 @@
+configure do
+  set :username, "<%= username %>"
+  set :password, "<%= password %>"
+  set :media_types, {
+    :music => {:dir => "<%= music_dir %>"}
+  }
+
+  Mongoid.configure do |config|
+    config.master = Mongo::Connection.new.db("<%= application_name %>")
+  end
+end
+
