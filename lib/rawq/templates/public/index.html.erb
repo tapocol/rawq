@@ -6,51 +6,28 @@
     <script type="text/javascript" src="/javascript/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/javascript/ejs/ejs_production.js"></script>
     <script type="text/javascript" src="/javascript/audio_player.js"></script>
+    <script type="text/javascript" src="/javascript/music_list.js"></script>
+    <script type="text/javascript" src="/javascript/local_storage.js"></script>
     <script type="text/javascript" src="/javascript/view.js"></script>
+    <script type="text/javascript" src="/javascript/rawq.js"></script>
     <script type="text/javascript">
       //<![CDATA[
-    $(function() {
-        window.rawq = {
-          audio_player: new AudioPlayer({selector: "#audio-player"}),
-          view: new View()
-        };
-        $.getJSON("/media", function(data) {
-          var media_list_data = [];
-          for (var i = 0; i < data.length; i++) {
-            media_list_data.push(data[i]._id);
-            var media_data = { name: data[i].name };
-            var sources_data = [];
-            for (var j = 0; j < data[i].sources.length; j++) {
-              sources_data[j] = {
-                src: "/media/" + data[i]._id + "/" + data[i].sources[j]._id,
-                mimetype: data[i].sources[j].mimetype
-              };
-            }
-            window.localStorage.setItem(data[i]._id, JSON.stringify(sources_data));
-            window.localStorage.setItem("media_" + data[i]._id, JSON.stringify(media_data));
-          }
-          window.localStorage.setItem("media_list", JSON.stringify(media_list_data));
-          var media_list = JSON.parse(window.localStorage.getItem("media_list"));
-          for (var i = 0; i < media_list.length; i++) {
-            var media = JSON.parse(window.localStorage.getItem("media_" + media_list[i]));
-            var sources = JSON.parse(window.localStorage.getItem(media_list[i]));
-            for (var i = 0; i < sources.length; i++) {
-              $(".media_list").append('<li id="' + media_list[i] + '" class="media">' + media.name + '</li>');
-            }
-          }
-          $(".media_list .media").click(function() {
-            window.rawq.audio_player.change({
-              sources: JSON.parse(window.localStorage.getItem($(this).attr("id")))
-            });
-          });
-        });
-    });
+
+      $(function() {
+        window.rawq = new Rawq();
+        window.rawq.download_media(function() { window.rawq.render_music_list(); });
+      });
+
       //]]>
     </script>
   </head>
   <body>
-    <ul id="music_list" class="media_list"></ul>
-    <audio id="audio-player" controls="controls"></audio>
+    <div id="media_lists">
+      <ul id="music_list" class="media_list"></ul>
+    </div>
+    <div id="media_players">
+      <audio id="audio_player" controls="controls"></audio>
+    </div>
   </body>
 </html>
 
