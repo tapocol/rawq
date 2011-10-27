@@ -9,26 +9,51 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Craig Jackson"]
-  s.date = %q{2011-10-20}
+  s.date = %q{2011-10-26}
+  s.default_executable = %q{rawq}
   s.description = %q{Ruby media streaming web application
 
 Simply install and run on a server. Access the web application with any well-supported HTML5 browser.
 }
   s.email = %q{tapocol@gmail.com}
+  s.executables = ["rawq"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".document",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
+    "bin/rawq",
     "lib/rawq.rb",
+    "lib/rawq/generator.rb",
+    "lib/rawq/generator/application.rb",
+    "lib/rawq/generator/options.rb",
+    "lib/rawq/templates/Gemfile",
+    "lib/rawq/templates/application.rb",
+    "lib/rawq/templates/lib/config.rb.erb",
+    "lib/rawq/templates/public/favicon.ico",
+    "lib/rawq/templates/public/index.html.erb",
+    "lib/rawq/templates/public/javascript/audio_player.js",
+    "lib/rawq/templates/public/javascript/ejs/ejs_production.js",
+    "lib/rawq/templates/public/javascript/jquery/jquery.min.js",
+    "lib/rawq/templates/public/javascript/local_storage.js",
+    "lib/rawq/templates/public/javascript/music_list.js",
+    "lib/rawq/templates/public/javascript/rawq.js",
+    "lib/rawq/templates/public/javascript/view.js",
+    "lib/rawq/templates/public/templates/audio_sources.ejs",
+    "lib/rawq/templates/public/templates/music_list_item.ejs",
+    "lib/rawq/version.rb",
+    "rawq.gemspec",
     "test/helper.rb",
-    "test/test_rawq.rb"
+    "test/rawq/generator/test_application.rb",
+    "test/rawq/generator/test_options.rb",
+    "test/rawq/test_generator.rb"
   ]
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
@@ -43,17 +68,20 @@ Simply install and run on a server. Access the web application with any well-sup
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
+      s.add_development_dependency(%q<rr>, [">= 0"])
     else
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<rr>, [">= 0"])
     end
   else
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
     s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<rr>, [">= 0"])
   end
 end
 
