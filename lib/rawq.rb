@@ -1,6 +1,9 @@
 require "rawq/version"
+require "mongoid"
+require "sinatra/rawq"
 
-class RawQ
-  autoload :Generator, "rawq/generator"
+module RawQ
+  autoload :Media, "rawq/collections/media"
+  autoload :Source, "rawq/collections/source"
 end
 
