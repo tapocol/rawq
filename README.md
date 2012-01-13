@@ -11,7 +11,7 @@ Installation
     gem install rawq
 
     require "rawq"
-    register Sinatra::RawQ
+    register Sinatra::RawQExt
 
 Contributing
 ------------
