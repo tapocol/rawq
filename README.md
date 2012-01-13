@@ -8,10 +8,10 @@ Simply install and run on a server. Access the web application with any well-sup
 Installation
 ------------
 
-  gem install rawq
+    gem install rawq
 
-  require "rawq"
-  register Sinatra::RawQ
+    require "rawq"
+    register Sinatra::RawQ
 
 Contributing
 ------------
