@@ -20,7 +20,7 @@ module Sinatra
       app.get "/media/:id" do
         begin
           media = RawQ::Media.find(params[:id])
-        rescue Mongoid::Errors::DocumentNotFound
+        rescue Mongoid::Errors::DocumentNotFound, BSON::InvalidObjectId
           raise Sinatra::NotFound
         end
         media.to_json :include => :sources
@@ -30,7 +30,7 @@ module Sinatra
         begin
           media = RawQ::Media.find(params[:id])
           source = media.sources.find(params[:source_id])
-        rescue Mongoid::Errors::DocumentNotFound
+        rescue Mongoid::Errors::DocumentNotFound, BSON::InvalidObjectId
           raise Sinatra::NotFound
         end
         send_file File.join(source.file), :type => source.mimetype
