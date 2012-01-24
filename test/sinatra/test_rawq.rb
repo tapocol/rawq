@@ -7,6 +7,7 @@ class TestApp < Sinatra::Base
   set :username, "testuser"
   set :password, "testpass"
   set :public_folder, File.join(File.dirname(__FILE__), '..', 'public')
+  set :views, File.join(File.dirname(__FILE__), '..', 'views')
 end
 
 class SinatraRawQExtTest < Test::Unit::TestCase
@@ -84,11 +85,40 @@ class SinatraRawQExtTest < Test::Unit::TestCase
       end
     end
 
+    context "get /media/:id.json" do
+      setup do
+        @media = RawQ::Media.create
+      end
+
+      should "respond unauthorized status when missing credentials" do
+        get "/media/#{@media.id}.json"
+        assert_equal 401, last_response.status
+      end
+
+      should "respond unauthorized status when incorrect credentials" do
+        authorize "wronguser", "wrongpass"
+        get "/media/#{@media.id}.json"
+        assert_equal 401, last_response.status
+      end
+
+      should "respond not found status when incorrect id" do
+        authorize "testuser", "testpass"
+        get "/media/wrongid.json"
+        assert_equal 404, last_response.status
+      end
+
+      should "respond ok status when correct credentials and id" do
+        authorize "testuser", "testpass"
+        get "/media/#{@media.id}.json"
+        assert_equal 200, last_response.status
+      end
+    end
+
     context "get /media/:id/:source_id" do
       setup do
         @media = RawQ::Media.create
         @source = RawQ::Source.new
-        @source.file = File.join(File.dirname(__FILE__), '..', 'public', 'source.mp3')
+        @source.file = File.join(File.dirname(__FILE__), '..', 'media', 'source.mp3')
         @media.sources << @source
       end
 

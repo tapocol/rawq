@@ -17,3 +17,6 @@ pkg
 # For vim:
 *.swp
 
+# RVM
+.rvmrc
+
