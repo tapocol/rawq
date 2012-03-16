@@ -58,7 +58,7 @@ class SinatraRawQExtTest < Test::Unit::TestCase
 
     context "get /media/:id" do
       setup do
-        @media = RawQ::Media.create
+        @media = RawQ::Media.create :media_type => "audio"
       end
 
       should "respond unauthorized status when missing credentials" do
@@ -87,7 +87,7 @@ class SinatraRawQExtTest < Test::Unit::TestCase
 
     context "get /media/:id.json" do
       setup do
-        @media = RawQ::Media.create
+        @media = RawQ::Media.create :media_type => "audio"
       end
 
       should "respond unauthorized status when missing credentials" do
@@ -116,7 +116,7 @@ class SinatraRawQExtTest < Test::Unit::TestCase
 
     context "get /media/:id/:source_id" do
       setup do
-        @media = RawQ::Media.create
+        @media = RawQ::Media.create :media_type => "audio"
         @source = RawQ::Source.new
         @source.file = File.join(File.dirname(__FILE__), '..', 'media', 'source.mp3')
         @media.sources << @source
