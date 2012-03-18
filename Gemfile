@@ -16,8 +16,8 @@ group :development do
 end
 
 group :test do
-  gem "shoulda"
   gem "rr"
+  gem "minitest"
   gem "rack-test", "~> 0.6.1"
 end
 

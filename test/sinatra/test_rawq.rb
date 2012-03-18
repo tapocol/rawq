@@ -10,144 +10,153 @@ class TestApp < Sinatra::Base
   set :views, File.join(File.dirname(__FILE__), '..', 'views')
 end
 
-class SinatraRawQExtTest < Test::Unit::TestCase
+class SinatraRawQExtTest < MiniTest::Spec
   include Rack::Test::Methods
 
   def app
     TestApp
   end
 
-  context "registered" do
-    context "get /" do
-      should "respond unauthorized status when missing credentials" do
+  describe "registered" do
+    describe "get /" do
+      it "respond unauthorized status when missing credentials" do
         get "/"
         assert_equal 401, last_response.status
       end
 
-      should "respond unauthorized status when incorrect credentials" do
+      it "respond unauthorized status when incorrect credentials" do
         authorize "wronguser", "wrongpass"
         get "/"
         assert_equal 401, last_response.status
       end
 
-      should "respond ok status when correct credentials" do
+      it "respond ok status when correct credentials" do
         authorize "testuser", "testpass"
         get "/"
         assert_equal 200, last_response.status
       end
     end
 
-    context "get /media" do
-      should "respond unauthorized status when missing credentials" do
+    describe "get /media" do
+      it "respond unauthorized status when missing credentials" do
         get "/media"
         assert_equal 401, last_response.status
       end
 
-      should "respond unauthorized status when incorrect credentials" do
+      it "respond unauthorized status when incorrect credentials" do
         authorize "wronguser", "wrongpass"
         get "/media"
         assert_equal 401, last_response.status
       end
 
-      should "respond ok status when correct credentials" do
+      it "respond ok status when correct credentials" do
         authorize "testuser", "testpass"
         get "/media"
         assert_equal 200, last_response.status
       end
     end
 
-    context "get /media/:id" do
-      setup do
-        @media = RawQ::Media.create :media_type => "audio"
-      end
-
-      should "respond unauthorized status when missing credentials" do
-        get "/media/#{@media.id}"
+    describe "get /media/:id" do
+      it "respond unauthorized status when missing credentials" do
+        get "/media/1234"
         assert_equal 401, last_response.status
       end
 
-      should "respond unauthorized status when incorrect credentials" do
+      it "respond unauthorized status when incorrect credentials" do
         authorize "wronguser", "wrongpass"
-        get "/media/#{@media.id}"
+        get "/media/1234"
         assert_equal 401, last_response.status
       end
 
-      should "respond not found status when incorrect id" do
+      it "respond not found status when missing id" do
         authorize "testuser", "testpass"
         get "/media/wrongid"
         assert_equal 404, last_response.status
       end
 
-      should "respond ok status when correct credentials and id" do
+      it "respond not found status when invalid id" do
         authorize "testuser", "testpass"
-        get "/media/#{@media.id}"
+        get "/media/zxcv"
+        assert_equal 404, last_response.status
+      end
+
+      it "respond ok status when correct credentials and id" do
+        authorize "testuser", "testpass"
+        get "/media/1234"
         assert_equal 200, last_response.status
       end
     end
 
-    context "get /media/:id.json" do
-      setup do
-        @media = RawQ::Media.create :media_type => "audio"
-      end
-
-      should "respond unauthorized status when missing credentials" do
-        get "/media/#{@media.id}.json"
+    describe "get /media/:id.json" do
+      it "respond unauthorized status when missing credentials" do
+        get "/media/1234.json"
         assert_equal 401, last_response.status
       end
 
-      should "respond unauthorized status when incorrect credentials" do
+      it "respond unauthorized status when incorrect credentials" do
         authorize "wronguser", "wrongpass"
-        get "/media/#{@media.id}.json"
+        get "/media/1234.json"
         assert_equal 401, last_response.status
       end
 
-      should "respond not found status when incorrect id" do
+      it "respond not found status when missing id" do
         authorize "testuser", "testpass"
         get "/media/wrongid.json"
         assert_equal 404, last_response.status
       end
 
-      should "respond ok status when correct credentials and id" do
+      it "respond not found status when invalid id" do
         authorize "testuser", "testpass"
-        get "/media/#{@media.id}.json"
+        get "/media/zxcv.json"
+        assert_equal 404, last_response.status
+      end
+
+      it "respond ok status when correct credentials and id" do
+        authorize "testuser", "testpass"
+        get "/media/1234.json"
         assert_equal 200, last_response.status
       end
     end
 
-    context "get /media/:id/:source_id" do
-      setup do
-        @media = RawQ::Media.create :media_type => "audio"
-        @source = RawQ::Source.new
-        @source.file = File.join(File.dirname(__FILE__), '..', 'media', 'source.mp3')
-        @media.sources << @source
-      end
-
-      should "respond unauthorized status when missing credentials" do
-        get "/media/#{@media.id}/#{@source.id}"
+    describe "get /media/:id/:source_id" do
+      it "respond unauthorized status when missing credentials" do
+        get "/media/1234/5678"
         assert_equal 401, last_response.status
       end
 
-      should "respond unauthorized status when incorrect credentials" do
+      it "respond unauthorized status when incorrect credentials" do
         authorize "wronguser", "wrongpass"
-        get "/media/#{@media.id}/#{@source.id}"
+        get "/media/1234/5678"
         assert_equal 401, last_response.status
       end
 
-      should "respond not found status when incorrect id" do
+      it "respond not found status when missing media id" do
         authorize "testuser", "testpass"
-        get "/media/wrongid/#{@source.id}"
+        get "/media/wrongid/5678"
         assert_equal 404, last_response.status
       end
 
-      should "respond not found status when incorrect id" do
+      it "respond not found status when missing source id" do
         authorize "testuser", "testpass"
-        get "/media/#{@media.id}/wrongid"
+        get "/media/1234/wrongid"
         assert_equal 404, last_response.status
       end
 
-      should "respond ok status when correct credentials and id" do
+      it "respond not found status when invalid media id" do
         authorize "testuser", "testpass"
-        get "/media/#{@media.id}/#{@source.id}"
+        get "/media/zxcv/5678"
+        assert_equal 404, last_response.status
+      end
+
+      it "respond not found status when invalid source id" do
+        authorize "testuser", "testpass"
+        get "/media/1234/zxcv"
+        assert_equal 404, last_response.status
+      end
+
+      it "respond ok status when correct credentials and ids" do
+        authorize "testuser", "testpass"
+        get "/media/1234/5678"
         assert_equal 200, last_response.status
       end
     end
